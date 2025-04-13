@@ -19,7 +19,6 @@ def download_plot(fig):
         file_name="visualization_report.png",
         mime="image/png"
     )
-# if uploaded_file:
 def load_data():
     try:
         df = pd.read_csv('books.csv', encoding='utf-8', on_bad_lines='skip')
@@ -56,7 +55,7 @@ def load_data():
         # Common filters
         st.sidebar.markdown("### Filters")
         slider_val = st.sidebar.slider("Select Number of Records", 5, 50, 10)
-        fig, ax = plt.subplots(figsize=(16, 12))
+        fig, ax = plt.subplots(figsize=(10, 6))
 
         if viz_option == "Top Rated Books":
             top_books = df.sort_values(by='average_rating', ascending=False).head(slider_val)
@@ -65,11 +64,12 @@ def load_data():
                 st.dataframe(top_books.head(10))
             sns.barplot(x='average_rating', y='title',hue='  num_pages', data=top_books,palette='pastel', ax=ax, dodge=False
             )
-            ax.set_title("Top Rated Books", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.set_xlabel("Average Rating", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.set_ylabel("Book Title", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='y', labelsize=12)
-            ax.tick_params(axis='x', labelsize=12)
+            ax.set_title("Top Rated Books", fontdict={'fontsize':28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.set_xlabel("Average Rating", fontdict={'fontsize':28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.set_ylabel("Book Title", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='y', labelsize=18)
+            ax.tick_params(axis='x', labelsize=18)
+            download_plot(fig)
             st.pyplot(fig)
 
         elif viz_option == "Books by Page Count":
@@ -79,11 +79,12 @@ def load_data():
             sns.barplot(
                 x='  num_pages', y='title',
                 data=top_books, palette='pastel', ax=ax)
-            ax.set_title("Books with Most Pages", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.set_xlabel("Number of Pages", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='y', labelsize=12)
-            ax.set_ylabel("Book Title", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='x', labelsize=12)
+            ax.set_title("Books with Most Pages", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.set_xlabel("Number of Pages", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='y', labelsize=18)
+            ax.set_ylabel("Book Title", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='x', labelsize=18)
+            download_plot(fig)
             st.pyplot(fig)
 
         elif viz_option == "Books by Ratings Count":
@@ -92,34 +93,38 @@ def load_data():
                 st.dataframe(top_books.head(10))
             sns.barplot(
                 x='ratings_count', y='title',data=top_books, palette='pastel', ax=ax)
-            ax.set_title("Books with Most Ratings", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='y', labelsize=12)
-            ax.set_xlabel("Ratings Count", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.set_ylabel("Book Title", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='x', labelsize=12)
+            ax.set_title("Books with Most Ratings", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='y', labelsize=18)
+            ax.set_xlabel("Ratings Count", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.set_ylabel("Book Title", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='x', labelsize=18)
+            download_plot(fig)
             st.pyplot(fig)
 
         elif viz_option == "Scatter Plot: Pages vs Rating":
+            fig, ax = plt.subplots(figsize=(10, 6))
             with st.expander("🔍 Preview Data"):
                 st.dataframe(df.head(10))
             sns.scatterplot(
                 data=df,x='  num_pages', y='average_rating',size='ratings_count', hue='average_rating',palette='pastel', ax=ax)
-            ax.set_title("Pages vs Rating (Size = Ratings Count)", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='y', labelsize=12)
-            ax.set_xlabel("Number of Pages", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.set_ylabel("Average Rating", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='x', labelsize=12)
+            ax.set_title("Pages vs Rating (Size = Ratings Count)", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='y', labelsize=18)
+            ax.set_xlabel("Number of Pages", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.set_ylabel("Average Rating", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='x', labelsize=18)
+            download_plot(fig)
             st.pyplot(fig)
 
         elif viz_option == "Histogram: Average Rating":
             with st.expander("🔍 Preview Data"):
                 st.dataframe(df.head(10))
             sns.histplot(data=df,x='average_rating', bins=20,kde=True, color='teal', ax=ax)
-            ax.set_title("Distribution of Average Ratings", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.set_xlabel("Average Rating", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='y', labelsize=12)
-            ax.set_ylabel("Frequency", fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='x', labelsize=12)
+            ax.set_title("Distribution of Average Ratings", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.set_xlabel("Average Rating", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='y', labelsize=18)
+            ax.set_ylabel("Frequency", fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='x', labelsize=18)
+            download_plot(fig)
             st.pyplot(fig)
         elif viz_option == "Top Rated Books by Author":
             top_books = df.sort_values(by='average_rating', ascending=False).dropna(subset=['authors', 'average_rating'])
@@ -128,16 +133,17 @@ def load_data():
             top_n = top_unique.head(slider_val)
             with st.expander("🔍 Preview Data"):
                 st.dataframe(top_n.head(top_n.shape[0]))
-            fig, ax = plt.subplots(figsize=(20, 15))
+            fig, ax = plt.subplots(figsize=(18, 12))
             sns.barplot(data=top_n, x='authors', y='average_rating', hue='title', dodge=False, palette='pastel', width=0.3, ax=ax)
-            ax.set_title('Top Authors with Their Highest Rated Book', fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='y', labelsize=12)
-            ax.set_xlabel('Author',     fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
-            ax.tick_params(axis='x', labelsize=12)
-            ax.set_ylabel('Average Ratings', fontdict={'fontsize': 18, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.set_title('Top Authors with Their Highest Rated Book', fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='y', labelsize=18)
+            ax.set_xlabel('Author',     fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
+            ax.tick_params(axis='x', labelsize=18)
+            ax.set_ylabel('Average Ratings', fontdict={'fontsize': 28, 'fontweight': 'bold', 'fontname': 'Arial'})
             ax.legend(title='Book Title', bbox_to_anchor=(1.15, 1), loc='upper left')
-            st.pyplot(fig)
             download_plot(fig)
+            st.pyplot(fig)
+            
 
         elif viz_option == "Most Recent Books":
             df['publication_date'] = pd.to_datetime(df['publication_date'], errors='coerce')
@@ -151,11 +157,11 @@ def load_data():
             fig, ax = plt.subplots(figsize=(15, 8))
             sns.barplot(data=recent_books, y='title', x='  num_pages', hue='publication_date', palette='pastel', width=0.5, ax=ax)
             ax.set_title('Most Recent Books by Publication Year', fontsize=16)
-            ax.set_xlabel('Number of Pages', fontsize=12)
-            ax.set_ylabel('Book Title', fontsize=12)
+            ax.set_xlabel('Number of Pages', fontsize=18)
+            ax.set_ylabel('Book Title', fontsize=18)
             ax.tick_params(axis='x', rotation=45)
-            st.pyplot(fig)
             download_plot(fig)
+            st.pyplot(fig)
 
         elif viz_option == "Revisions by Publisher":
             rev_df = df.dropna(subset=['publisher'])
@@ -166,11 +172,11 @@ def load_data():
             fig, ax = plt.subplots(figsize=(15, 10))
             sns.scatterplot(data=rev_summary, x='publisher', y='revision_count', hue='publisher', palette='pastel', s=100, ax=ax)
             ax.set_title('Text Revisions by Each Publisher', fontsize=16)
-            ax.set_xlabel('Publisher', fontsize=12)
-            ax.set_ylabel('Number of Revisions', fontsize=12)
+            ax.set_xlabel('Publisher', fontsize=18)
+            ax.set_ylabel('Number of Revisions', fontsize=18)
             ax.tick_params(axis='x', rotation=45)
-            st.pyplot(fig)
             download_plot(fig)
+            st.pyplot(fig)
 
         elif viz_option == "Ratings by Publisher":
             ratings_df = df.dropna(subset=['publisher', 'ratings_count'])
@@ -181,21 +187,23 @@ def load_data():
             fig, ax = plt.subplots(figsize=(10, 8))
             ax.pie(ratings_summary['ratings_count'], labels=ratings_summary['publisher'], autopct='%1.1f%%', colors=sns.color_palette("pastel", len(ratings_summary)))
             ax.set_title('Total Ratings of Each Publisher', fontsize=16)
-            st.pyplot(fig)
             download_plot(fig)
+            st.pyplot(fig)
+    
         elif viz_option == "Number of Books per year":
             books_per_year = df['publication_year'].value_counts().reset_index()
             books_per_year.columns = ['Publication Year', 'Number of Books']
             books_per_year = books_per_year.sort_values(by='Publication Year')
             with st.expander("🔍 Preview Data"):
                 st.dataframe(books_per_year.head(slider_val))
-            fig, ax = plt.subplots(figsize=(12, 6))
+            fig, ax = plt.subplots(figsize=(18, 6))
             sns.lineplot(data=books_per_year, x='Publication Year', y='Number of Books', marker='o')
             ax.set_title('Number of Books Published per Year', fontsize=16)
-            ax.set_xlabel('Publication Year', fontsize=12)
-            ax.set_ylabel('Number of Books', fontsize=12)
-            st.pyplot(fig)
+            ax.set_xlabel('Publication Year', fontsize=18)
+            ax.set_ylabel('Number of Books', fontsize=18)
             download_plot(fig)
+            st.pyplot(fig)
+           
         elif viz_option == "Average Ratings per Year":
             df = pd.read_csv("books.csv", encoding='utf-8', on_bad_lines='skip')
             df['publication_date'] = pd.to_datetime(df['publication_date'], errors='coerce')
@@ -203,7 +211,7 @@ def load_data():
             df['publication_year'] = df['publication_date'].dt.year
             ratings_per_year = df.groupby('publication_year')['average_rating'].mean().reset_index()
             ratings_per_year = ratings_per_year.sort_values(by='publication_year')
-            fig, ax = plt.subplots(figsize=(12, 6))
+            fig, ax = plt.subplots(figsize=(18, 6))
             sns.lineplot(data=ratings_per_year, x='publication_year', y='average_rating', marker='o', ax=ax)
             ax.set_title('Average Ratings per Year')
             ax.set_xlabel('Publication Year')
@@ -216,12 +224,11 @@ def load_data():
             top_books = df[df['ratings_count'] > 1000].sort_values(by='average_rating', ascending=False).head(slider_val)
             with st.expander("🔍 Preview Data"):
                 st.dataframe(top_books.head(slider_val))
-            # st.title(f'Top {slider_val} Books by Average Rating')
             fig, ax = plt.subplots(figsize=(10, 6))
             sns.barplot(x='average_rating', y='title', hue='  num_pages', data=top_books, palette='pastel', ax=ax)
             ax.set_title(f'Top {slider_val} Books by Average Rating', fontsize=16)
-            ax.set_xlabel('Average Rating', fontsize=12)
-            ax.set_ylabel('Book Title', fontsize=12)
+            ax.set_xlabel('Average Rating', fontsize=18)
+            ax.set_ylabel('Book Title', fontsize=18)
             download_plot(fig)
             st.pyplot(fig)
 
